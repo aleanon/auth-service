@@ -21,8 +21,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            auth-service/.cargo
-            auth-service/target/
+            .cargo
+            target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
@@ -30,7 +30,7 @@ jobs:
         run: rustup update stable && rustup default stable
 
       - name: Build and test auth-service code
-        working-directory: ./auth-service
+        working-directory: ./
         run: |
           cargo build --verbose
           cargo test --verbose
@@ -74,7 +74,7 @@ jobs:
         run: sudo apt-get install sshpass
 
       - name: Copy compose.yml to droplet
-        run: sshpass -v -p '${{ secrets.DROPLET_PASSWORD }}' scp -o StrictHostKeyChecking=no compose.yml root@${{ vars.DROPLET_IP }}:~
+        run: sshpass -v -p '${{ secrets.DROPLET_PASSWORD }}' scp -o StrictHostKeyChecking=no compose.yml root@${{ vars.DROPLET_IP }}:~/auth-service
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -83,7 +83,7 @@ jobs:
           username: root
           password: ${{ secrets.DROPLET_PASSWORD }}
           script: |
-            cd ~
+            cd ~/auth-service
             export AUTH_SERVICE_IP=${{ vars.DROPLET_IP }}
             snap install docker
             docker compose down
