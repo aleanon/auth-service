@@ -73,6 +73,9 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install sshpass
 
+      - name: Create auth-service directory
+        run: sshpass -v -p '${{ secrets.DROPLET_PASSWORD }}' ssh -o StrictHostKeyChecking=no root@${{ vars.DROPLET_IP }} 'mkdir -p ~/auth-service'
+
       - name: Copy compose.yml to droplet
         run: sshpass -v -p '${{ secrets.DROPLET_PASSWORD }}' scp -o StrictHostKeyChecking=no compose.yml root@${{ vars.DROPLET_IP }}:~/auth-service/
 
