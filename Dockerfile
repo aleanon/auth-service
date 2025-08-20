@@ -22,6 +22,6 @@ RUN cargo build --release
 # Start with a minimal image and copy over the binary and assets folder.
 FROM debian:buster-slim AS runtime
 WORKDIR /app
-COPY --from=builder /app/target/release/ /usr/local/bin
+COPY --from=builder /app/target/release/auth-service /usr/local/bin
 COPY --from=builder /app/assets /app/assets
 ENTRYPOINT ["/usr/local/bin/auth-service"]
