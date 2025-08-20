@@ -1,3 +1,4 @@
+mod health;
 mod helpers;
 mod login;
 mod logout;

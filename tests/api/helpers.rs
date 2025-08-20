@@ -32,6 +32,14 @@ impl TestApp {
             .expect("Failed to execute request")
     }
 
+    pub async fn get_health(&self) -> reqwest::Response {
+        self.http_client
+            .get(&format!("{}/health", &self.address))
+            .send()
+            .await
+            .expect("Failed to execute request")
+    }
+
     pub async fn post_signup<Body>(&self, body: &Body) -> reqwest::Response
     where
         Body: serde::Serialize,

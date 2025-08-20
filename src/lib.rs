@@ -1,7 +1,11 @@
 mod routes;
 
-use axum::{routing::post, serve::Serve, Router};
-use routes::{login, logout, signup, verify_2fa, verify_token};
+use axum::{
+    routing::{get, post},
+    serve::Serve,
+    Router,
+};
+use routes::{health, login, logout, signup, verify_2fa, verify_token};
 use std::error::Error;
 use tower_http::services::ServeDir;
 
@@ -14,6 +18,7 @@ impl Application {
     pub async fn build(address: &str) -> Result<Self, Box<dyn Error>> {
         let router = Router::new()
             .nest_service("/", ServeDir::new("assets"))
+            .route("/health", get(health))
             .route("/signup", post(signup))
             .route("/login", post(login))
             .route("/logout", post(logout))
