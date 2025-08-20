@@ -1,3 +1,4 @@
+name: live-bootcamp
 services:
   # app-service:
   #   image: aleanton/app-service # specify name of image on Docker Hub
